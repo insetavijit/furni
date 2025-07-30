@@ -1,6 +1,186 @@
-/node_modules
-/vendor
-package-lock.json
-composer.lock
-style.css.map
+# ===================================================
+# 🗃 General
+# ===================================================
+# macOS system files
 .DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux system files
+*~
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+*.pid
+*.seed
+*.gz
+*.tar
+*.tar.gz
+*.zip
+*.rar
+
+# ===================================================
+# 💻 Editor & IDE
+# ===================================================
+.vscode/
+.code-workspace
+.idea/
+*.sublime-project
+*.sublime-workspace
+nbproject/
+.phpstorm.meta.php
+*.codekit-config
+
+# ===================================================
+# 🔧 Dependencies & Build
+# ===================================================
+# Node modules and lock files
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Composer
+vendor/
+composer.lock
+
+# Build output
+/dist/
+/build/
+/public/build/
+/assets/dist/
+
+# ===================================================
+# 🛠 Tooling Caches
+# ===================================================
+# Vite
+.vite/
+vite.config.js.timestamp-*
+
+# ESLint, Prettier, Stylelint
+.eslintcache
+.prettiercache
+.stylelintcache
+
+# Testing frameworks
+/coverage/
+/test-results/
+/playwright-report/
+*.spec.js.snap
+
+# Parcel
+.parcel-cache/
+
+# Webpack
+.webpack/
+
+# ===================================================
+# 📁 WordPress-Specific
+# ===================================================
+# Core WordPress directories (for theme/plugin repos)
+wp-admin/
+wp-includes/
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup-*/
+wp-content/backups/
+wp-content/debug.log
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/object-cache.php
+
+# WordPress auto-generated files
+sitemap.xml
+readme.html
+wp-config-sample.php
+wp-content/plugins/hello.php
+
+# WordPress environment files
+wp-config-local.php
+wp-config-dev.php
+wp-config-staging.php
+wp-config-prod.php
+
+# Common WordPress plugin caches
+wp-content/w3tc-config/
+wp-content/cache-minify/
+wp-content/litespeed/
+
+# ===================================================
+# 🌐 Environment & Secrets
+# ===================================================
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.production
+.env.test
+.env.backup
+
+# Sensitive files
+auth.json
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# ===================================================
+# 🐳 Docker & DevOps
+# ===================================================
+.docker/
+docker-compose.override.yml
+docker-compose.dev.yml
+docker-compose.local.yml
+Dockerfile.local
+*.dockerignore
+
+# CI/CD
+.github/workflows/*.local.yml
+.circleci/*.local.yml
+.gitlab-ci.local.yml
+
+# ===================================================
+# 🧪 Database & Local Dev
+# ===================================================
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+local-db.sql
+dev-db.sql
+staging-db.sql
+
+# ===================================================
+# 🛠 Custom & Scaffolding
+# ===================================================
+scaffold.config.js
+*.min.js.map
+*.min.css.map
+*.asset.php
+
+# Local development overrides
+local-config.json
+local-config.php
