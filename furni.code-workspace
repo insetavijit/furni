@@ -1,6 +1,8 @@
 {
   "folders": [
-    { "path": "/home/avijit/html/wp-devl/ipsum/wp-content/themes/furni" }
+    {
+      "path": "." // Root directory for WordPress theme
+    }
   ],
   "settings": {
     // PHP / WordPress
@@ -10,19 +12,40 @@
     "php.suggest.basic": false,
     "intelephense.environment.phpVersion": "8.2.0",
     "intelephense.stubs": [
-      "Core", "standard", "SPL", "Reflection", "pcre", "dom", "json",
-      "mysqli", "mbstring", "session", "wordpress", "curl", "gd", "openssl",
-      "xml", "zip", "date", "pdo"
+      "Core",
+      "standard",
+      "SPL",
+      "pcre",
+      "dom",
+      "json",
+      "mysqli",
+      "mbstring",
+      "session",
+      "wordpress",
+      "curl",
+      "gd",
+      "openssl",
+      "xml",
+      "zip"
     ],
     "intelephense.files.associations": ["*.php", "*.phtml", "*.inc"],
     "intelephense.files.maxSize": 5000000,
-    "intelephense.format.braces": "psr12",
+    "intelephense.telemetry.enabled": false,
+    "intelephense.format.braces": "allman",
     "intelephense.completion.insertUseDeclaration": true,
     "intelephense.diagnostics.undefinedFunctions": true,
     "intelephense.diagnostics.undefinedVariables": true,
     "phpcs.enable": true,
     "phpcs.standard": "WordPress",
     "phpcs.executablePath": "./vendor/bin/phpcs",
+    "phpcs.ignorePatterns": [
+      "vendor/**",
+      "dist/**",
+      "build/**",
+      "wp-admin/**",
+      "wp-includes/**",
+      "wp-content/uploads/**"
+    ],
 
     // Code formatting & linting
     "editor.formatOnSave": true,
@@ -32,10 +55,12 @@
       "source.organizeImports": "explicit"
     },
     "editor.wordWrap": "on",
-    "editor.rulers": [80],
+    // "editor.rulers": [80],
     "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
 
-    // File and search exclusions
+    // File and search exclusions (merged from .gitignore)
     "files.exclude": {
       "**/.git": true,
       "**/.DS_Store": true,
@@ -46,6 +71,7 @@
       "**/vendor": true,
       "**/dist": true,
       "**/build": true,
+      "**/.sass-cache": true,
       "**/wp-admin": true,
       "**/wp-includes": true,
       "**/wp-content/uploads": true,
@@ -72,8 +98,7 @@
       "**/.env.*": true,
       "**/.vite": true,
       "**/.eslintcache": true,
-      "**/.stylelintcache": true,
-      "**/coverage": true
+      "**/.stylelintcache": true
     },
     "files.watcherExclude": {
       "**/node_modules/**": true,
@@ -111,11 +136,12 @@
 
     // Debugging & Terminal
     "debug.php.executablePath": "/usr/bin/php8.2",
-    "terminal.integrated.defaultProfile.linux": "bash"
+    "terminal.integrated.defaultProfile.linux": "zsh"
   },
   "extensions": {
     "recommendations": [
       "bmewburn.vscode-intelephense-client",
+      "neilbrayfield.php-docblocker",
       "esbenp.prettier-vscode",
       "stylelint.vscode-stylelint",
       "dbaeumer.vscode-eslint"
@@ -139,27 +165,34 @@
         "isBackground": true,
         "problemMatcher": ["$tsc-watch", "$eslint-stylish"]
       },
-      {
-        "label": "Lint PHP",
-        "type": "shell",
-        "command": "./vendor/bin/phpcs --standard=WordPress wp-content/themes/furni",
-        "group": { "kind": "test", "isDefault": true },
-        "problemMatcher": ["$phpcs"]
-      }
+      // {
+      //   "label": "Lint PHP",
+      //   "type": "shell",
+      //   "command": "./vendor/bin/phpcs --standard=WordPress --extensions=php wp-content/themes/furni",
+      //   "group": { "kind": "test", "isDefault": true },
+      //   "problemMatcher": ["$phpcs"]
+      // },
+      // {
+      //   "label": "Fix PHP",
+      //   "type": "shell",
+      //   "command": "./vendor/bin/phpcbf --standard=WordPress --extensions=php wp-content/themes/furni",
+      //   "group": "build",
+      //   "problemMatcher": ["$phpcs"]
+      // }
     ]
   },
   "launch": {
     "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Listen for Xdebug",
-        "type": "php",
-        "request": "launch",
-        "port": 9003,
-        "pathMappings": {
-          "/var/www/html": "${workspaceFolder}/wp-content/themes/furni"
-        }
-      }
-    ]
+    // "configurations": [
+    //   {
+    //     "name": "Listen for Xdebug",
+    //     "type": "php",
+    //     "request": "launch",
+    //     "port": 9003,
+    //     "pathMappings": {
+    //       "/var/www/html": "${workspaceFolder}/wp-content/themes/furni"
+    //     }
+    //   }
+    // ]
   }
 }
