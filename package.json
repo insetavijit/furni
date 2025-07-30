@@ -19,8 +19,14 @@
   "devDependencies": {
     "@wordpress/scripts": "^19.2.2",
     "dir-archiver": "^1.1.1",
+    "eslint": "^7.32.0",
     "node-sass": "^7.0.1",
-    "rtlcss": "^3.5.0"
+    "prettier": "^3.6.2",
+    "rtlcss": "^3.5.0",
+    "sass": "^1.89.2",
+    "stylelint": "^16.23.0",
+    "stylelint-config-standard": "^39.0.0",
+    "vite": "^7.0.6"
   },
   "rtlcssConfig": {
     "options": {

@@ -1,0 +1,165 @@
+{
+  "folders": [
+    { "path": "/home/avijit/html/wp-devl/ipsum/wp-content/themes/furni" }
+  ],
+  "settings": {
+    // PHP / WordPress
+    "php.executablePath": "/usr/bin/php8.2",
+    "php.validate.enable": true,
+    "php.validate.run": "onType",
+    "php.suggest.basic": false,
+    "intelephense.environment.phpVersion": "8.2.0",
+    "intelephense.stubs": [
+      "Core", "standard", "SPL", "Reflection", "pcre", "dom", "json",
+      "mysqli", "mbstring", "session", "wordpress", "curl", "gd", "openssl",
+      "xml", "zip", "date", "pdo"
+    ],
+    "intelephense.files.associations": ["*.php", "*.phtml", "*.inc"],
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.format.braces": "psr12",
+    "intelephense.completion.insertUseDeclaration": true,
+    "intelephense.diagnostics.undefinedFunctions": true,
+    "intelephense.diagnostics.undefinedVariables": true,
+    "phpcs.enable": true,
+    "phpcs.standard": "WordPress",
+    "phpcs.executablePath": "./vendor/bin/phpcs",
+
+    // Code formatting & linting
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.wordWrap": "on",
+    "editor.rulers": [80],
+    "editor.detectIndentation": false,
+
+    // File and search exclusions
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/*.log": true,
+      "**/*.tmp": true,
+      "**/*.bak": true,
+      "**/node_modules": true,
+      "**/vendor": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/wp-admin": true,
+      "**/wp-includes": true,
+      "**/wp-content/uploads": true,
+      "**/wp-content/cache": true,
+      "**/wp-content/backup-*": true,
+      "**/.env": true,
+      "**/.env.*": true,
+      "**/*.sql": true,
+      "**/*.sql.gz": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/vendor": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/wp-admin": true,
+      "**/wp-includes": true,
+      "**/wp-content/uploads": true,
+      "**/wp-content/cache": true,
+      "**/*.log": true,
+      "**/*.lock": true,
+      "**/*.min.*": true,
+      "**/.env": true,
+      "**/.env.*": true,
+      "**/.vite": true,
+      "**/.eslintcache": true,
+      "**/.stylelintcache": true,
+      "**/coverage": true
+    },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/vendor/**": true,
+      "**/dist/**": true,
+      "**/wp-content/uploads/**": true,
+      "**/wp-content/cache/**": true
+    },
+
+    // Frontend: Prettier, Stylelint, ESLint
+    "prettier.requireConfig": true,
+    "prettier.printWidth": 80,
+    "prettier.tabWidth": 2,
+    "stylelint.validate": ["css", "scss"],
+    "eslint.validate": ["javascript", "javascriptreact"],
+
+    // Language-specific formatters
+    "[php]": {
+      "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+      "editor.tabSize": 4,
+      "editor.insertSpaces": true
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[scss]": {
+      "editor.defaultFormatter": "stylelint.vscode-stylelint",
+      "editor.tabSize": 2
+    },
+
+    // Debugging & Terminal
+    "debug.php.executablePath": "/usr/bin/php8.2",
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": {
+    "recommendations": [
+      "bmewburn.vscode-intelephense-client",
+      "esbenp.prettier-vscode",
+      "stylelint.vscode-stylelint",
+      "dbaeumer.vscode-eslint"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build Frontend",
+        "type": "shell",
+        "command": "npm run build",
+        "group": { "kind": "build", "isDefault": true },
+        "problemMatcher": ["$tsc", "$eslint-stylish"]
+      },
+      {
+        "label": "Watch Frontend",
+        "type": "shell",
+        "command": "npm run dev",
+        "group": "build",
+        "isBackground": true,
+        "problemMatcher": ["$tsc-watch", "$eslint-stylish"]
+      },
+      {
+        "label": "Lint PHP",
+        "type": "shell",
+        "command": "./vendor/bin/phpcs --standard=WordPress wp-content/themes/furni",
+        "group": { "kind": "test", "isDefault": true },
+        "problemMatcher": ["$phpcs"]
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Listen for Xdebug",
+        "type": "php",
+        "request": "launch",
+        "port": 9003,
+        "pathMappings": {
+          "/var/www/html": "${workspaceFolder}/wp-content/themes/furni"
+        }
+      }
+    ]
+  }
+}
