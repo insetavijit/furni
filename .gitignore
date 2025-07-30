@@ -21,7 +21,6 @@ $RECYCLE.BIN/
 
 # Temporary files
 *.log
-*.tmp
 *.swp
 *.swo
 *.bak
