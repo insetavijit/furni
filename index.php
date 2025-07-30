@@ -8,21 +8,25 @@
 <!doctype html>
 <html lang="en">
 
+<!doctype html>
+<html <?php language_attributes(); ?>>
+
 <head>
-    <meta charset="utf-8">
+    <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Optional: SEO Meta Tags -->
     <meta name="author" content="Untree.co">
-    <link rel="shortcut icon" href="favicon.png">
+    <meta name="description" content="">
+    <meta name="keywords" content="bootstrap, bootstrap4">
 
-    <meta name="description" content="" />
-    <meta name="keywords" content="bootstrap, bootstrap4" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/favicon.png">
 
-    <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="css/tiny-slider.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+    <!-- WordPress Title Tag -->
+    <title><?php bloginfo('name'); ?><?php wp_title('|', true, 'left'); ?></title>
+
+    <?php wp_head(); ?>
 </head>
 
 <body>
@@ -540,10 +544,7 @@
     </footer>
     <!-- End Footer Section -->
 
-
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/tiny-slider.js"></script>
-    <script src="js/custom.js"></script>
+    <?php wp_footer(); ?>
 </body>
 
 </html>

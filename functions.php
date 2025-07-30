@@ -1,184 +1,177 @@
 <?php
+
 /**
- * _s functions and definitions
+ * Theme Function Loader
  *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ * Dynamically loads custom function and class files from the `/inc` directory.
+ * Provides secure, performant, and extensible file inclusion for WordPress themes.
  *
- * @package _s
+ * @package furniName
+ * @since 1.0.0
  */
 
-if ( ! defined( '_S_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+namespace furniTheme\fnc_loader;
+
+use WP_Error;
+
+if (! defined('ABSPATH'))
+{
+    exit; // Prevent direct access.
 }
 
 /**
- * Sets up theme defaults and registers support for various WordPress features.
+ * Theme Function Loader Class
  *
- * Note that this function is hooked into the after_setup_theme hook, which
- * runs before the init hook. The init hook is too late for some features, such
- * as indicating support for post thumbnails.
+ * Singleton class to handle dynamic inclusion of theme files with security and performance optimizations.
  */
-function _s_setup() {
-	/*
-		* Make theme available for translation.
-		* Translations can be filed in the /languages/ directory.
-		* If you're building a theme based on _s, use a find and replace
-		* to change '_s' to the name of your theme in all the template files.
-		*/
-	load_theme_textdomain( '_s', get_template_directory() . '/languages' );
+class Theme_Function_Loader
+{
+    /**
+     * Singleton instance.
+     *
+     * @var Theme_Function_Loader|null
+     */
+    private static $instance = null;
 
-	// Add default posts and comments RSS feed links to head.
-	add_theme_support( 'automatic-feed-links' );
+    /**
+     * Directory for include files.
+     *
+     * @var string
+     */
+    private $inc_dir;
 
-	/*
-		* Let WordPress manage the document title.
-		* By adding theme support, we declare that this theme does not use a
-		* hard-coded <title> tag in the document head, and expect WordPress to
-		* provide it for us.
-		*/
-	add_theme_support( 'title-tag' );
+    /**
+     * Cache key for file existence.
+     *
+     * @var string
+     */
+    private $cache_key = 'furni_fnc_loader_cache';
 
-	/*
-		* Enable support for Post Thumbnails on posts and pages.
-		*
-		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		*/
-	add_theme_support( 'post-thumbnails' );
+    /**
+     * List of included files to prevent duplicates.
+     *
+     * @var array
+     */
+    private $included_files = [];
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus(
-		array(
-			'menu-1' => esc_html__( 'Primary', '_s' ),
-		)
-	);
+    /**
+     * Private constructor for singleton pattern.
+     */
+    private function __construct()
+    {
+        $this->inc_dir = trailingslashit(get_template_directory() . '/func');
+    }
 
-	/*
-		* Switch default core markup for search form, comment form, and comments
-		* to output valid HTML5.
-		*/
-	add_theme_support(
-		'html5',
-		array(
-			'search-form',
-			'comment-form',
-			'comment-list',
-			'gallery',
-			'caption',
-			'style',
-			'script',
-		)
-	);
+    /**
+     * Get singleton instance.
+     *
+     * @return Theme_Function_Loader
+     */
+    public static function get_instance(): self
+    {
+        if (null === self::$instance)
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
-	// Set up the WordPress core custom background feature.
-	add_theme_support(
-		'custom-background',
-		apply_filters(
-			'_s_custom_background_args',
-			array(
-				'default-color' => 'ffffff',
-				'default-image' => '',
-			)
-		)
-	);
+    /**
+     * Initialize the loader and hook into WordPress.
+     *
+     * @return void
+     */
+    public static function init(): void
+    {
+        $instance = self::get_instance();
+        add_action('after_setup_theme', [$instance, 'load_fnc_loader'], 0);
+    }
 
-	// Add theme support for selective refresh for widgets.
-	add_theme_support( 'customize-selective-refresh-widgets' );
+    /**
+     * Load theme include files.
+     *
+     * @return void
+     */
+    public function load_fnc_loader(): void
+    {
+        // Define default include files.
+        $default_files = [
+            'fnc-scriptenQue',
+            'fnc-styleenQue'
+        ];
 
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support(
-		'custom-logo',
-		array(
-			'height'      => 250,
-			'width'       => 250,
-			'flex-width'  => true,
-			'flex-height' => true,
-		)
-	);
-}
-add_action( 'after_setup_theme', '_s_setup' );
+        /**
+         * Filter the list of theme include files.
+         *
+         * @param array $files Array of base filenames (without .php).
+         */
+        $theme_function_files = apply_filters('furni_include_files', $default_files);
 
-/**
- * Set the content width in pixels, based on the theme's design and stylesheet.
- *
- * Priority 0 to make it available to lower priority callbacks.
- *
- * @global int $content_width
- */
-function _s_content_width() {
-	$GLOBALS['content_width'] = apply_filters( '_s_content_width', 640 );
-}
-add_action( 'after_setup_theme', '_s_content_width', 0 );
+        // Get cached file existence results, if available.
+        $file_cache = wp_cache_get($this->cache_key, 'furni');
+        if (false === $file_cache)
+        {
+            $file_cache = [];
+        }
 
-/**
- * Register widget area.
- *
- * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
- */
-function _s_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', '_s' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', '_s' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
-		)
-	);
-}
-add_action( 'widgets_init', '_s_widgets_init' );
+        foreach ($theme_function_files as $filename)
+        {
+            // Sanitize filename to prevent directory traversal.
+            $sanitized_filename = sanitize_file_name($filename . '.php');
+            $filepath = $this->inc_dir . $sanitized_filename;
 
-/**
- * Enqueue scripts and styles.
- */
-function _s_scripts() {
-	wp_enqueue_style( '_s-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( '_s-style', 'rtl', 'replace' );
+            // Validate file path to ensure it's within the /inc directory.
+            $real_filepath = realpath($filepath);
+            if (false === $real_filepath || strpos($real_filepath, realpath($this->inc_dir)) !== 0)
+            {
+                $this->log_error('Invalid file path detected', ['filepath' => $filepath]);
+                continue;
+            }
 
-	wp_enqueue_script( '_s-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+            // Check file existence, using cache if available.
+            if (! isset($file_cache[$sanitized_filename]))
+            {
+                $file_cache[$sanitized_filename] = file_exists($filepath);
+                wp_cache_set($this->cache_key, $file_cache, 'furni', HOUR_IN_SECONDS);
+            }
 
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-}
-add_action( 'wp_enqueue_scripts', '_s_scripts' );
+            // Include file if it exists and hasn't been included.
+            if ($file_cache[$sanitized_filename] && ! in_array($filepath, $this->included_files, true))
+            {
+                require_once $filepath;
+                $this->included_files[] = $filepath;
+            }
+            elseif (! $file_cache[$sanitized_filename])
+            {
+                $this->log_error('Missing include file', ['filepath' => $filepath]);
+            }
+        }
+    }
 
-/**
- * Implement the Custom Header feature.
- */
-require get_template_directory() . '/inc/custom-header.php';
+    /**
+     * Log errors to WordPress debug log or WP_Error.
+     *
+     * @param string $message Error message.
+     * @param array  $context Additional context for the error.
+     * @return void
+     */
+    private function log_error(string $message, array $context = []): void
+    {
+        $error_message = sprintf('[furniName Error] %s: %s', $message, wp_json_encode($context));
 
-/**
- * Custom template tags for this theme.
- */
-require get_template_directory() . '/inc/template-tags.php';
+        if (defined('WP_DEBUG') && WP_DEBUG)
+        {
+            error_log($error_message);
+        }
 
-/**
- * Functions which enhance the theme by hooking into WordPress.
- */
-require get_template_directory() . '/inc/template-functions.php';
-
-/**
- * Customizer additions.
- */
-require get_template_directory() . '/inc/customizer.php';
-
-/**
- * Load Jetpack compatibility file.
- */
-if ( defined( 'JETPACK__VERSION' ) ) {
-	require get_template_directory() . '/inc/jetpack.php';
+        // Optionally store errors for admin display or further processing.
+        if (is_admin())
+        {
+            $error = new WP_Error('furni_loader_error', $message, $context);
+            set_transient('furni_loader_errors', $error, HOUR_IN_SECONDS);
+        }
+    }
 }
 
-/**
- * Load WooCommerce compatibility file.
- */
-if ( class_exists( 'WooCommerce' ) ) {
-	require get_template_directory() . '/inc/woocommerce.php';
-}
+// Initialize the loader.
+Theme_Function_Loader::init();
