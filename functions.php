@@ -97,7 +97,8 @@ class Theme_Function_Loader
         // Define default include files.
         $default_files = [
             'fnc-scriptenQue',
-            'fnc-styleenQue'
+            'fnc-styleenQue',
+            'class-templateLoader'
         ];
 
         /**
