@@ -32,13 +32,13 @@ use furni\Loader\PageLoader;
     <?php
     PageLoader::get_instance([
         '/template-parts/index-navBar.php',
-        '/template-parts/index-hero.php',
-        '/template-parts/index-productSelection.php',
-        '/template-parts/index-whyChoseus.php',
-        '/template-parts/index-weHelpSection.php',
-        '/template-parts/index-testimonialScetion.php',
-        '/template-parts/index-blogSec.php',
-        '/template-parts/index-footer.php',
+        // '/template-parts/index-hero.php',
+        // '/template-parts/index-productSelection.php',
+        // '/template-parts/index-whyChoseus.php',
+        // '/template-parts/index-weHelpSection.php',
+        // '/template-parts/index-testimonialScetion.php',
+        // '/template-parts/index-blogSec.php',
+        // '/template-parts/index-footer.php',
     ])->load_templates();
     ?>
 

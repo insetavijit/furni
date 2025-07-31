@@ -98,7 +98,10 @@ class Theme_Function_Loader
         $default_files = [
             'fnc-scriptenQue',
             'fnc-styleenQue',
-            'class-templateLoader'
+            'class-templateLoader',
+            'class-wp-bootstrap-navwalker',
+            // 'fnc-MenuRegistration',
+            'Custom'
         ];
 
         /**

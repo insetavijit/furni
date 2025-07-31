@@ -11,6 +11,7 @@
     "php.validate.run": "onType",
     "php.suggest.basic": false,
     "intelephense.environment.phpVersion": "8.2.0",
+    "intelephense.environment.includePaths": [ "../../plugins" ],
     "intelephense.stubs": [
       "Core",
       "standard",
