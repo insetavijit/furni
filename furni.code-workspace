@@ -48,7 +48,7 @@
     ],
 
     // Code formatting & linting
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false , 
     "editor.formatOnPaste": false,
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit",
