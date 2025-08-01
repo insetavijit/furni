@@ -9,7 +9,7 @@
 $acfClass = [
     'Name' => 'header-hero',
     'Location' => 'option',
-    'ONPAGE_DEBUG' => False
+    'ONPAGE_DEBUG' => TRUE
 ];
 
 $thm_options = get_field($acfClass['Name'], $acfClass['Location']);

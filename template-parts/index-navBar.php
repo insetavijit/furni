@@ -1,74 +1,39 @@
 <?php
 
 /**
- * ACF Theme Option Loader and Navigation Component
- *
- * Loads ACF option fields, extracts image URLs, and renders a Bootstrap-based navigation bar.
- * Includes robust error handling, secure output, and admin-only debugging.
- *
- * @package Furni
- * @since 1.0.0
- * Define ACF option fields to load globally.
- * Add more keys as needed (e.g., 'footer-settings', 'global-alerts').
+ * Header Navigation
+ * Handles cart and profile logo retrieval from ACF options
  */
-$acf_keys = [
-    'header-nav-opt',
-];
 
-/**
- * Container for fetched ACF option fields.
- * Each key corresponds to a top-level ACF options group.
- *
- * @var array $ACF_FIELDS_FRNY
- */
-$ACF_FIELDS_FRNY = [];
+const ONPAGE_DEBUG  = false ;
+$thm_options = furni_get_acf_content();
 
-// Check if ACF is active before fetching fields
-if (function_exists('get_field'))
+// Validate that we have the necessary data structure
+if (!$thm_options || !isset($thm_options['header-nav-opt']))
 {
-    foreach ($acf_keys as $key)
-    {
-        $ACF_FIELDS_FRNY[$key] = get_field($key, 'option');
-    }
-}
-else
-{
-    error_log('Furni Theme: ACF plugin is not active. Header options will not be loaded.');
+    error_log('Header Navigation: Missing theme options or header-nav-opt configuration');
+    return;
 }
 
-/**
- * Extract image URLs from ACF fields with fallbacks.
- *
- * @var array $thm_Content
- */
-$thm_Content = [
-    'cart-logo'    => furni_get_acf_image_url(
-        $ACF_FIELDS_FRNY['header-nav-opt']['cart-logo'] ?? null,
-        'full'
-    ),
-    'profile-logo' => furni_get_acf_image_url(
-        $ACF_FIELDS_FRNY['header-nav-opt']['profile-logo'] ?? null,
-        'full'
-    ),
+$header_nav_options = $thm_options['header-nav-opt'];
+$acf_content = [
+    'header_nav_options' => $header_nav_options,
+    'cart-logo' => esc_url(wp_get_attachment_image_url($header_nav_options['cart-logo'], 'full')),
+    'profile-logo' => esc_url(wp_get_attachment_image_url($header_nav_options['profile-logo'], 'full'))
 ];
 
-/**
- * Debug flag: Enable admin-only debug output in development.
- * Requires WP_DEBUG and PAGE_DEBUG to be true.
- */
-const PAGE_DEBUG = false;
-if (current_user_can('manage_options') && defined('WP_DEBUG') && WP_DEBUG && PAGE_DEBUG)
+// Debug output for administrators (only in debug mode)
+if (current_user_can('manage_options') && defined('WP_DEBUG') && WP_DEBUG && ONPAGE_DEBUG)
 {
-    echo '<pre style="background:#111;color:#0f0;padding:10px;font-size:14px;">';
-    echo "ACF Fields:\n";
-    print_r($ACF_FIELDS_FRNY);
-    echo "\nTheme Content:\n";
-    print_r($thm_Content);
+    echo '<div class="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #0073aa;">';
+    echo '<h4>Header Navigation Debug Info:</h4>';
+    echo '<pre style="background: white; padding: 10px; overflow-x: auto;">';
+
+    print_r($acf_content);
     echo '</pre>';
+    echo '</div>';
 }
 ?>
-
-<!-- Header Navigation -->
 <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="<?php esc_attr_e('Furni navigation bar', 'furni'); ?>">
     <div class="container">
         <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>">
@@ -106,12 +71,12 @@ if (current_user_can('manage_options') && defined('WP_DEBUG') && WP_DEBUG && PAG
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li>
                     <a class="nav-link" href="#">
-                        <img src="<?php echo $thm_Content['cart-logo'] ?>">
+                        <img src="<?php echo $acf_content['cart-logo'] ?>">
                     </a>
                 </li>
                 <li>
                     <a class="nav-link" href="http://localhost/wp-devl/ipsum/wp-admin/">
-                        <img src="<?php echo $thm_Content['profile-logo'] ?>">
+                        <img src="<?php echo $acf_content['profile-logo'] ?>">
                     </a>
                 </li>
             </ul>
